@@ -11,9 +11,12 @@ using System.Numerics;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.Intrinsics.X86;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UdemyCodingExercises
@@ -203,6 +206,36 @@ namespace UdemyCodingExercises
             //     >= 50 when !isPremiumCustomer => 5,
             //     >= 50 when !isPremiumCustomer => 0
             // };
+        }
+
+
+        // #8: Try parsing a date and extracting its components
+        // Implement the TryExtractDateComponents method that takes a string representing a date and attempts to extract its components: year, month, and day.
+        // If the input can be successfully parsed into a DateTime, the method should:
+        // Set the out parameters for year, month, and day
+        // Return true
+        // If the input cannot be parsed, the method should:
+        // Set all out values to zero
+        // Return false
+        // To ensure your code works consistently regardless of the system’s culture, use a parsing approach that is culture-invariant.Consider using DateTime.TryParse.
+        internal static bool TryExtractDateComponents(string dateInput, out int year, out int month, out int day)
+        {
+            if (DateTime.TryParse(dateInput, out DateTime dateTimeParseResult))
+            {
+                year = dateTimeParseResult.Year;
+                month = dateTimeParseResult.Month;
+                day = dateTimeParseResult.Day;
+
+                return true;
+            }
+            else
+            {
+                year = 0;
+                month = 0;
+                day = 0;
+
+                return false;
+            }
         }
     }
 
