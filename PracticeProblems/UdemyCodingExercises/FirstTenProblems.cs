@@ -24,6 +24,8 @@ namespace UdemyCodingExercises
             }
 
             return result;
+
+            // other solution: return numbers.Any(number => number < 0);
         }
     }
 }
