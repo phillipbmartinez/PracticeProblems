@@ -8,8 +8,10 @@ using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UdemyCodingExercises
@@ -128,5 +130,43 @@ namespace UdemyCodingExercises
 
             return totalBreakTime;
         }
+
+
+        // #6: Track the highest score for a player
+        // Implement the UpdateHighestScore method that updates the highest score recorded in a player's statistics.
+        // Implement the UpdateHighestScore method that updates the highest score recorded in a player's statistics.
+        // The player parameter may be null. Its Statistics property may also be null , and so can be its HighestScore property.
+        // If the player or their statistics are null, the method should do nothing (it should not update any data or throw an exception).
+        // If HighestScore is null, set it to the provided newScore.
+        // If the existing HighestScore is lower than newScore, update it—so that it always stores the highest value.
+        internal static void UpdateHighestScore(Player? player, int newScore)
+        {
+            if (player == null || player.Statistics == null)
+            {
+                return;
+            }
+
+            if (player.Statistics.HighestScore == null)
+            {
+                player.Statistics.HighestScore = newScore;
+            }
+
+            if (player.Statistics.HighestScore < newScore)
+            {
+                player.Statistics.HighestScore = newScore;
+            }
+        }
+    }
+
+    // For problem #6
+    internal class Player
+    {
+        public Statistics? Statistics { get; set; }
+    }
+
+    // For problem #6
+    internal class Statistics
+    {
+        public int? HighestScore { get; set; }
     }
 }
