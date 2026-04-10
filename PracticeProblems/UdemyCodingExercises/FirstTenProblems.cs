@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Linq;
@@ -109,6 +110,23 @@ namespace UdemyCodingExercises
             //     .ToList();
 
             return qualifiedPlayers;
+        }
+
+
+        // #5: Calculate total break time from multiple time ranges
+        // A company tracks employee breaks using start and end timestamps.Each break is represented as a pair of DateTime values—when the break started and when it ended.
+        // Implement the CalculateTotalBreakTime method that receives a list of tuples, each containing a start and end DateTime, and returns the total break time as a TimeSpan.
+        // Assume that each start is before its corresponding end.
+        internal static TimeSpan CalculateTotalBreakTime(List<(DateTime Start, DateTime End)> breaks)
+        {
+            TimeSpan totalBreakTime = new TimeSpan(0);
+
+            foreach ((DateTime Start, DateTime End) employeeBreak in breaks)
+            {
+                totalBreakTime += employeeBreak.End - employeeBreak.Start;
+            }
+
+            return totalBreakTime;
         }
     }
 }
