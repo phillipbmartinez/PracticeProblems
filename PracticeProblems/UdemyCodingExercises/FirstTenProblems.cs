@@ -237,6 +237,36 @@ namespace UdemyCodingExercises
                 return false;
             }
         }
+
+
+        // #9: Check if a string is a palindrome
+        // Implement the IsPalindrome method that checks whether a given string is a palindrome.A palindrome reads the same forward and backward.For example, the words "madam" or "radar" are palindromes, but "hello" is not.
+        // The comparison should be case-sensitive and should include all characters (spaces, punctuation, etc.).
+        // Return true if the string is a palindrome; otherwise, return false.
+        internal static bool IsPalindrome(string input)
+        {
+            // radar == radar    hello != olleh
+            // 01234   43210     01234    43210
+            for (int i = 0; i < input.Length / 2; i++)
+            {
+                if (input[i] != input[input.Length - 1 - i])
+                {
+                    return false;
+                }
+
+                // Other option
+                // if (input[i] != input[^(i + 1)])
+                // {
+                    // return false;
+                // }
+            }
+
+            return true;
+
+            // LINQ solution
+            // return input.SequenceEqual(input.Reverse());
+
+        }
     }
 
     // For problem #6
