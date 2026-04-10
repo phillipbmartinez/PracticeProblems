@@ -6,9 +6,11 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
@@ -155,6 +157,52 @@ namespace UdemyCodingExercises
             {
                 player.Statistics.HighestScore = newScore;
             }
+        }
+
+
+        // #7: Calculate shipping cost based on order total and customer status
+        // Implement the CalculateShippingCost method that calculates the shipping cost based on the total value of an order and whether the customer is a premium member.
+        // The method takes two parameters:
+        // orderTotal – the total amount of the order(decimal)
+        // isPremiumCustomer – a boolean flag indicating if the customer is a premium member
+        // The method should return the shipping cost according to these rules:
+        // If the order total is less than 50 and the customer is not a premium member, return 10
+        // If the order total is less than 50 and the customer is a premium member, return 5
+        // If the order total is 50 or more and the customer is not a premium member, return 5
+        // If the order total is 50 or more and the customer is a premium member, return 0
+        // You can use plain old if-else statements, but consider using a switch expression with when clauses to make the code shorter and cleaner.
+        internal static decimal CalculateShippingCost(decimal orderTotal, bool isPremiumCustomer)
+        {
+            decimal result = 0;
+
+            switch (orderTotal)
+            {
+                case < 50 when isPremiumCustomer == false:
+                    result = 10;
+                    break;
+                case < 50 when isPremiumCustomer == true:
+                    result = 5;
+                    break;
+                case >= 50 when isPremiumCustomer == false:
+                    result = 5;
+                    break;
+                case >= 50 when isPremiumCustomer == true:
+                    result = 0;
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+
+            // Course solution
+            // return orderTotal switch
+            // {
+            //     < 50 when !isPremiumCustomer => 10,
+            //     < 50 when isPremiumCustomer => 5,
+            //     >= 50 when !isPremiumCustomer => 5,
+            //     >= 50 when !isPremiumCustomer => 0
+            // };
         }
     }
 
