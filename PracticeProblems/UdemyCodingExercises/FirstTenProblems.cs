@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -279,5 +280,39 @@ namespace UdemyCodingExercises
     internal class Statistics
     {
         public int? HighestScore { get; set; }
+    }
+
+    // #10: Implement a weekly schedule with multiple custom indexers
+    // Implement the WeekSchedule class that allows storing and retrieving plans for days of the week using two custom indexers.
+    // The first indexer accepts a DayOfWeek enum value.
+    // The second indexer accepts a string and attempts to parse it into a DayOfWeek.If parsing fails, it should throw an ArgumentException.
+    // Both should use the underlying _plans Dictionary.
+    // The string-based indexer should work regardless of casing (e.g. "monday" or "MONDAY" are both valid).
+    // If no note is stored for a given day, the indexer should return null.
+    internal class WeekSchedule
+    {
+        private readonly Dictionary<DayOfWeek, string?> _plans = new Dictionary<DayOfWeek, string?>();
+
+        internal string? this[DayOfWeek dayOfWeek]
+        {
+            get => _plans.ContainsKey(dayOfWeek) ? _plans[dayOfWeek] : null;
+            set => _plans[dayOfWeek] = value;
+        }
+
+        internal string? this[string dayName]
+        {
+            get => this[ParseDayString(dayName)];
+            set => this[ParseDayString(dayName)] = value;
+        }
+
+        internal DayOfWeek ParseDayString(string dayString)
+        {
+            if (!Enum.TryParse<DayOfWeek>(dayString, ignoreCase: true, out var result))
+            {
+                throw new ArgumentException($"\"{dayString}\" is not a valid day name.");
+            }
+
+            return result;
+        }
     }
 }
