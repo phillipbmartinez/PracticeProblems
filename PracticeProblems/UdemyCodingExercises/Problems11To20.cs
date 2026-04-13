@@ -105,6 +105,29 @@ namespace UdemyCodingExercises
             return (ints, strings, unknownCount);
         }
 
+
+        // #14: Sum integers with strict overflow checking
+        // Implement the StrictSum method that takes a collection of integers and returns their total as an int.
+        // The method must ensure that if the integer overflow* happens(total sum exceeds the bounds of the int type), an OverflowException is thrown.
+        // * Integer overflow happens when a calculation exceeds the maximum value an int can hold in C# (2,147,483,647), causing it to wrap around and produce incorrect results.
+        internal static int StrictSum(IEnumerable<int> numbers)
+        {
+            int total = 0;
+
+            foreach (int num in numbers)
+            {
+                checked
+                {
+                    total += num;
+                }
+            }
+
+            return total;
+
+            // Other solution with LINQ
+            // return numbers.Sum();
+        }
+
     }
 
     // #11: Read file content safely
