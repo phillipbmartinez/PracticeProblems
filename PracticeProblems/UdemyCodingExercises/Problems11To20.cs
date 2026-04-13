@@ -52,6 +52,59 @@ namespace UdemyCodingExercises
 
             // Using LINQ: return numbers[start..end].Sum();
         }
+
+
+        // #13: Separate strings and integers from a mixed object list
+        // Implement the SeparateObjects method that receives a list of object values.
+        // Each value may be an integer, a string, or any other type.
+        // The method should return a tuple containing:
+        // A list of all int values
+        // A list of all string values
+        // A count of unknown values that were neither int nor string
+        public static (List<int> ints, List<string> strings, int unknownCount) SeparateObjects(List<object> objects)
+        {
+            List<int> ints = new List<int>();
+            List<string> strings = new List<string>();
+            int unknownCount = 0;
+
+            foreach (object obj in objects)
+            {
+                if (obj.GetType() == typeof(int))
+                {
+                    ints.Add((int)obj);
+                }
+                else if (obj.GetType() == typeof(string))
+                {
+                    strings.Add((string)obj);
+                }
+                else
+                {
+                    unknownCount++;
+                }
+
+                // Option #2:
+                // if (obj is int i)
+                // {
+                //     ints.Add(i);
+                // }
+                // else if (obj is string s)
+                // {
+                //     strings.Add(s);
+                // }
+                // else
+                // {
+                //     unknownCount++;
+                // }
+                // Option #2 with LINQ:
+                // var integars = objects.OfType<int>().ToList();
+                // var string = objects.OfType<string>().ToList();
+                // var unknownCount = objects.Count - integars.Count - strings.Count;
+                // return (integars, strings, unknownCount);
+            }
+
+            return (ints, strings, unknownCount);
+        }
+
     }
 
     // #11: Read file content safely
