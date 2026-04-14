@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -128,7 +129,23 @@ namespace UdemyCodingExercises
             // return numbers.Sum();
         }
 
-    }
+        // #15: Safely sum integers into a long
+        // Implement the SafeSum method that takes a collection of integers and returns their total as a long.
+        // The goal is to avoid integer overflow* when summing large numbers; make sure the result is always a long, even when the sum of the integers exceeds int.MaxValue.
+        internal static long SafeSum(IEnumerable<int> numbers)
+        {
+            long total = 0;
+
+            foreach (int num in numbers)
+            {
+                total += num;
+            }
+
+            return total;
+
+            // Solution with LINQ
+            // return numbers.Sum(number => (long)number);
+        }
 
     // #11: Read file content safely
     // Implement the TryReadFile method that takes a file name and attempts to read it using IFileSystem.ReadFile.
