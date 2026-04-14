@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 using Microsoft.VisualBasic;
 using static System.Net.Mime.MediaTypeNames;
@@ -25,7 +28,7 @@ namespace UdemyCodingExercises
         // Clamp start to 0 if it's negative
         // Clamp end to the array’s length if it's too large (larger than array's length)
         // If start >= end, return 0
-        public static int SumInRange(int start, int end, params int[] numbers)
+        internal static int SumInRange(int start, int end, params int[] numbers)
         {
             int sum = 0;
 
@@ -62,7 +65,7 @@ namespace UdemyCodingExercises
         // A list of all int values
         // A list of all string values
         // A count of unknown values that were neither int nor string
-        public static (List<int> ints, List<string> strings, int unknownCount) SeparateObjects(List<object> objects)
+        internal static (List<int> ints, List<string> strings, int unknownCount) SeparateObjects(List<object> objects)
         {
             List<int> ints = new List<int>();
             List<string> strings = new List<string>();
@@ -147,49 +150,87 @@ namespace UdemyCodingExercises
             // return numbers.Sum(number => (long)number);
         }
 
-    // #11: Read file content safely
-    // Implement the TryReadFile method that takes a file name and attempts to read it using IFileSystem.ReadFile.
-    // If the file exists, return its contents.
-    // If the file does not exist (throws FileNotFoundException), log a warning (using ILogger) with the exception message and rethrow the exception.The warning can be a string in any format you like, but it must contain the exception's Message property.
-    // Whether the file is found or not, always log "Attempted to read file: [filename]" using the ILogger.
-    public class Exercise
-    {
-        private readonly IFileSystem _fileSystem;
-        private readonly ILogger _logger;
 
-        public Exercise(IFileSystem fileSystem, ILogger logger)
+        // #11: Read file content safely
+        // Implement the TryReadFile method that takes a file name and attempts to read it using IFileSystem.ReadFile.
+        // If the file exists, return its contents.
+        // If the file does not exist (throws FileNotFoundException), log a warning (using ILogger) with the exception message and rethrow the exception.The warning can be a string in any format you like, but it must contain the exception's Message property.
+        // Whether the file is found or not, always log "Attempted to read file: [filename]" using the ILogger.
+        internal class Exercise
         {
-            _fileSystem = fileSystem;
-            _logger = logger;
+            private readonly IFileSystem _fileSystem;
+            private readonly ILogger _logger;
+
+            public Exercise(IFileSystem fileSystem, ILogger logger)
+            {
+                _fileSystem = fileSystem;
+                _logger = logger;
+            }
+
+            public string TryReadFile(string fileName)
+            {
+                try
+                {
+                    return _fileSystem.ReadFile(fileName);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    _logger.Log(ex.Message);
+                    throw;
+                }
+                finally
+                {
+                    _logger.Log($"Attempted to read file: {fileName}");
+                }
+            }
         }
 
-        public string TryReadFile(string fileName)
+        // For problem #11
+        internal interface IFileSystem
         {
-            try
+            string ReadFile(string fileName);
+        }
+
+        // For problem #11
+        internal interface ILogger
+        {
+            void Log(string message);
+        }
+
+
+        // #16: Format text with custom styles
+        // A messaging system needs to process text inputs into different styles for display.The base TextFormatter class provides a default formatting method, while the derived classes ShoutFormatter and WhisperFormatter customize the output.
+        // In the base class, the Format method simply trims the message and adds the "Message:" prefix.
+        // Implement the Format method in each derived class:
+        // ShoutFormatter trims it, converts it to uppercase and adds "!!!" at the end.For example, for input "   Hello  " the result will be "SHOUT: HELLO!!!".
+        // WhisperFormatter trims it, converts it to lowercase, and wraps it in parentheses.For example, for input "   Hello  " the result will be "whisper: (hello)".
+        internal class TextFormatter
+        {
+            internal virtual string Format(string message)
             {
-                return _fileSystem.ReadFile(fileName);
-            }
-            catch (FileNotFoundException ex)
-            {
-                _logger.Log(ex.Message);
-                throw;
-            }
-            finally
-            {
-                _logger.Log($"Attempted to read file: {fileName}");
+                string processed = message.Trim();
+                return $"Message: {processed}";
             }
         }
-    }
 
-    // For problem #11
-    public interface IFileSystem
-    {
-        string ReadFile(string fileName);
-    }
+        // For problem #16
+        internal class ShoutFormatter : TextFormatter
+        {
+            internal override string Format(string message)
+            {
+                string processed = message.Trim().ToUpper();
+                return $"SHOUT: {processed}!!!";
+            }
+        }
 
-    // For problem #11
-    public interface ILogger
-    {
-        void Log(string message);
+        // For problem #16
+        internal class WhisperFormatter : TextFormatter
+        {
+            internal override string Format(string message)
+            {
+                string processed = message.Trim().ToLower();
+                return $"whisper: ({processed})";
+            }
+        }
     }
 }
