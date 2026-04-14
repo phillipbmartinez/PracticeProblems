@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -232,5 +233,25 @@ namespace UdemyCodingExercises
                 return $"whisper: ({processed})";
             }
         }
+
+
+        // #17: Read a string until the end marker
+        // Implement the ReadUntilEndMarker method that takes a string input which may contain the marker "_END_".
+        // The method should return the portion of the string that appears before the _END_ marker.
+        // If the marker is found, return all characters before it.If the marker is not found, return the entire input string unchanged.
+        // For example, for input "Hello there_END_ my fellow programmer" the result should be "Hello there".
+        internal static string ReadUntilEndMarker(string input)
+        {
+            if (input.Contains("_END_"))
+            {
+                string inputBeforeEnd = input.Split("_END_")[0];
+                return inputBeforeEnd;
+            }
+            else
+            {
+                return input;
+            }
+        }
     }
 }
+
