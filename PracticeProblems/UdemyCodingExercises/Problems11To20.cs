@@ -2,18 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net.Mail;
 using System.Numerics;
 using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.VisualBasic;
+using UdemyCodingExercises;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -253,6 +257,7 @@ namespace UdemyCodingExercises
             }
         }
 
+
         // #19: Count halvings until value drops below 1
         // Implement the CountHalvings method that takes a positive double and returns the number of times it can be divided by 2 before it becomes less than 1.
         // The method should always run the division at least once, even if the initial value is already less than 1. In this case, the method's result should be 1.
@@ -275,6 +280,69 @@ namespace UdemyCodingExercises
 
             return count;
         }
+
+
+        // #20: Send notifications via multiple channels
+        // A communication system needs to send messages to recipients through different channels, such as email and SMS.The Exercise class provides a SendToAll method that takes a list of notification objects, a recipient, and a message, and sends the message through each channel.
+        // Complete the missing code to ensure the program compiles and the SendToAll method functions correctly with both EmailNotification and SmsNotification.To do this, you’ll need to:
+        // Define an INotification interface with a method that matches the Send method signature.
+        // Update the EmailNotification and SmsNotification classes to implement this interface, using their existing SendEmail and SendSms methods to handle the notification logic.
+        public static void SendToAll(List<INotification> notifications, string recipient, string message)
+        {
+            foreach (var notification in notifications)
+            {
+                notification.Send(recipient, message);
+            }
+        }
+    }
+
+
+    // For problem #20
+    public interface INotification
+    {
+        void Send(string recipient, string message);
+    }
+
+
+    // For problem #20
+    public class EmailNotification : INotification
+    {
+        public void SendEmail(string emailAddress, string message)
+        {
+            Console.WriteLine($"[Email] To: {emailAddress} — Message: {message}");
+        }
+
+        public void Send(string emailAddress, string message)
+        {
+            Console.WriteLine($"[Email] To: {emailAddress} — Message: {message}");
+        }
+
+        // From solution
+        // public void Send(string emailAddress, string message)
+        // {
+        //     SendEmail(emailAddress, message);
+        // }
+    }
+
+
+    // For problem #20
+    public class SmsNotification : INotification
+    {
+        public void SendSms(string phoneNumber, string message)
+        {
+            Console.WriteLine($"[SMS] To: {phoneNumber} — Message: {message}");
+        }
+
+        public void Send(string phoneNumber, string message)
+        {
+            Console.WriteLine($"[SMS] To: {phoneNumber} — Message: {message}");
+        }
+
+        // From solution
+        // public void Send(string phoneNumber, string message)
+        // {
+        //     SendSms(phoneNumber, message);
+        // }
     }
 
 
