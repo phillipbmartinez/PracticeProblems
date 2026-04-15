@@ -252,6 +252,29 @@ namespace UdemyCodingExercises
                 return input;
             }
         }
+
+        // #19: Count halvings until value drops below 1
+        // Implement the CountHalvings method that takes a positive double and returns the number of times it can be divided by 2 before it becomes less than 1.
+        // The method should always run the division at least once, even if the initial value is already less than 1. In this case, the method's result should be 1.
+        // If the input is less than zero, throw ArgumentException.
+        internal static int CountHalvings(double value)
+        {
+            int count = 0;
+
+            if (value < 0)
+            {
+                throw new ArgumentException("Input value is below 0");
+            }
+
+            do
+            {
+                value = value / 2;
+                count++;
+            }
+            while (value >= 1);
+
+            return count;
+        }
     }
 
 
