@@ -253,5 +253,23 @@ namespace UdemyCodingExercises
             }
         }
     }
-}
 
+
+    // #18: Extend DayOfWeek to detect weekends
+    // Implement the IsWeekend extension method for the built-in DayOfWeek enum.
+    // This method should return true if the day is Saturday or Sunday, and false otherwise.
+    public static class DayOfWeekExtensions
+    {
+        public static bool IsWeekend(this DayOfWeek day)
+        {
+            if (day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}
