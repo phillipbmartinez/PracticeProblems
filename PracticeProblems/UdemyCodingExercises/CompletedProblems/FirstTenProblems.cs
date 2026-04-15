@@ -20,7 +20,7 @@ using Microsoft.VisualBasic;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace UdemyCodingExercises
+namespace UdemyCodingExercises.CompletedProblems
 {
     internal class FirstTenProblems
     {
