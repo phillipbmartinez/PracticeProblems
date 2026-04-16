@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Buffers.Text;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -109,6 +111,35 @@ namespace UdemyCodingExercises
             }
 
             Console.WriteLine("User registered successfully!");
+        }
+
+
+        // #23: Check if parentheses are balanced
+        // A code validator needs to check if the parentheses in an expression are balanced.We consider parentheses balanced if every opening parenthesis '(' has a matching closing parenthesis ')', and they are properly nested with no leftovers.
+        // For example (a + b) is balanced, but(a + b or)a + b(are not.
+        // Implement the AreParenthesesBalanced method in the Exercise class. The method takes a string with parentheses and returns true if they’re balanced, false otherwise.Focus only on round parentheses '(' and ')', ignoring other characters.
+        // Consider using Stack to solve this exercise.
+        internal static bool AreParenthesesBalanced(string expression)
+        {
+            Stack stack = new Stack();
+
+            foreach (char c in expression)
+            {
+                if (c == '(')
+                {
+                    stack.Push(c);
+                }
+                else if (c == ')')
+                {
+                    if (stack.Count == 0)
+                    {
+                        return false; // No matching opening parenthesis
+                    }
+                    stack.Pop();
+                }
+            }
+
+            return stack.Count == 0;
         }
     }
 }
