@@ -11,9 +11,12 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UdemyCodingExercises.Problems11To20;
 
@@ -188,6 +191,37 @@ namespace UdemyCodingExercises
                     }
                 }
                 return result;
+            }
+        }
+
+
+        // #25: Track class usage statistics
+        // A logging system needs to track how many messages it has processed by assigning each a unique ID.The Logger class uses a static field(_logCounter) to count log entries.
+        // Your task is to:
+        // Implement a static constructor to initialize _logCounter to 1.
+        // Use the provided static field(_logCounter) as the ID.
+        // Implement the static method Log to print each message with its ID in brackets(e.g., "[1] Message").
+        // Each call to Log should increment the counter so the next message gets the next ID.
+        // Use Console.WriteLine to print the message.
+        public class Logger
+        {
+            private static int _logCounter;
+
+            static Logger()
+            {
+                ResetCounter();
+            }
+
+            public static void Log(string message)
+            {
+                Console.WriteLine($"[{_logCounter}] {message}");
+                _logCounter++;
+            }
+
+            //do not modify - this method is needed for testing
+            public static void ResetCounter()
+            {
+                _logCounter = 1;
             }
         }
     }
