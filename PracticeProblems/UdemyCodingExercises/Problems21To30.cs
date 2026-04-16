@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.VisualBasic;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UdemyCodingExercises.Problems11To20;
@@ -223,6 +224,26 @@ namespace UdemyCodingExercises
             {
                 _logCounter = 1;
             }
+        }
+
+
+        // #26: Time duration adapter
+        // A time-tracking system needs a custom TimeDuration class to work seamlessly with TimeSpan from the.NET framework.The TimeDuration class has a read-only Seconds property(an int) set via its constructor.Your task is to:
+        // Implement an implicit conversion from TimeDuration to TimeSpan to allow automatic use in time APIs.
+        // Implement an explicit conversion from TimeSpan to TimeDuration to allow casting back, truncating fractional seconds (TimeSpan allows fractional seconds, but TimeDuration does not).
+        public class TimeDuration
+        {
+            public int Seconds { get; }
+
+            public TimeDuration(int seconds)
+            {
+                Seconds = seconds;
+            }
+
+            // This means you can automatically convert a TimeDuration into a TimeSpan without casting. Safe with no data loss
+            public static implicit operator TimeSpan(TimeDuration timeDuration) => TimeSpan.FromSeconds(timeDuration.Seconds);
+            // This means you must manually cast a TimeSpan into a TimeDuration. Potential data loss
+            public static explicit operator TimeDuration(TimeSpan timeSpan) => new TimeDuration((int)timeSpan.TotalSeconds);
         }
     }
 }
