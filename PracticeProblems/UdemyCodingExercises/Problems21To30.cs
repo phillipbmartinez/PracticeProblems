@@ -12,6 +12,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Runtime.Intrinsics.X86;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -265,6 +266,38 @@ namespace UdemyCodingExercises
 
             // LINQ Solution
             // return items.Distinct().Count();
+        }
+
+
+        // #28: A utility needs a simple container to hold two values of the same type(for example, two ints (1,2) or two strings("hey", "you").
+        // Define a generic Pair class that can store two values of the same type.It must have:
+        // Two properties, First and Second, giving access to read those values, but not allowing external code to modify them.
+        // A constructor to set these values.
+        // A public Swap method to exchange the values(it shall be void, and after it is called, First shall hold the value that was earlier in the Second, and vice versa).
+        // Use generics to make it work with any type.
+        // Remember to make this class public.
+        public class Pair<T>
+        {
+            public T First { get; private set; }
+            public T Second { get; private set; }
+
+            public Pair(T first, T second)
+            {
+                First = first;
+                Second = second;
+            }
+
+            public void Swap()
+            {
+                T temp = First;
+                First = Second;
+                Second = temp;
+
+                // Using a tuple
+                // (Second, First) = (First, Second);
+
+                Console.WriteLine($"First: {First}, Second: {Second}");
+            }
         }
     }
 }
