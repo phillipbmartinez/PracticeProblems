@@ -245,5 +245,26 @@ namespace UdemyCodingExercises
             // This means you must manually cast a TimeSpan into a TimeDuration. Potential data loss
             public static explicit operator TimeDuration(TimeSpan timeSpan) => new TimeDuration((int)timeSpan.TotalSeconds);
         }
+
+
+        // #27: Count unique elements in a list
+        // Implement the CountUnique method that takes a generic List<T> and returns the number of distinct elements it contains.
+        public static int CountUnique<T>(List<T> items)
+        {
+            HashSet<T> uniqueItems = new HashSet<T>();
+
+            foreach (T item in items)
+            {
+                uniqueItems.Add(item);
+            }
+
+            return uniqueItems.Count;
+
+            // Other solution
+            // return new HashSet<T>(items).Count;
+
+            // LINQ Solution
+            // return items.Distinct().Count();
+        }
     }
 }
