@@ -2,14 +2,18 @@
 using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UdemyCodingExercises.Problems11To20;
 
@@ -140,6 +144,51 @@ namespace UdemyCodingExercises
             }
 
             return stack.Count == 0;
+        }
+
+
+        // #24: Add matrices with operator overloading
+        // A math library needs to add two matrices together using a custom Matrix class. The class uses a 2D array(_data) to store integer values and has fields for row count(_rowsCount) and column count(_columnsCount) set in the constructor.
+        // Your task is to:
+        // Add an indexer to access and modify elements with matrix[row, column] syntax.
+        // Overload the + operator to perform element-wise addition of two matrices, where the result matrix contains the sum of corresponding elements from the two input matrices (e.g., result[row, column] = matrixA[row, column] + matrixB[row, column]). If the matrices have different dimensions, throw an InvalidOperationException.
+        public class Matrix
+        {
+            private readonly int[,] _data;
+            private readonly int _rowsCount;
+            private readonly int _columnsCount;
+
+            public Matrix(int rowsCount, int columnsCount)
+            {
+                _rowsCount = rowsCount;
+                _columnsCount = columnsCount;
+                _data = new int[_rowsCount, _columnsCount];
+            }
+
+            public int this[int row, int column]
+            {
+                get { return _data[row, column]; }
+                set { _data[row, column] = value; }
+            }
+
+            public static Matrix operator +(Matrix a, Matrix b)
+            {
+                if (a._rowsCount != b._rowsCount ||
+                    a._columnsCount != b._columnsCount)
+                {
+                    throw new InvalidOperationException("Matrices must have the same dimensions for addition.");
+                }
+
+                Matrix result = new Matrix(a._rowsCount, a._columnsCount);
+                for (int row = 0; row < a._rowsCount; row++)
+                {
+                    for (int col = 0; col < a._columnsCount; col++)
+                    {
+                        result[row, col] = a[row, col] + b[row, col];
+                    }
+                }
+                return result;
+            }
         }
     }
 }
