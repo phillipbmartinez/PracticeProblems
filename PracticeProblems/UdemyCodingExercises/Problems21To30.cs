@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UdemyCodingExercises.Problems11To20;
 
 namespace UdemyCodingExercises
@@ -65,6 +69,46 @@ namespace UdemyCodingExercises
             {
                 return _random.Next(minValue, maxValue);
             }
+        }
+
+
+        // #22: Validate user registration data
+        // Implement the RegisterUser that validates user registration data.The method takes four parameters: username (string), password (string), age (int), and email (string). Your task is to validate these inputs based on the following rules:
+        // Username: Cannot be null or empty.
+        // If null, throw an ArgumentNullException.
+        // If empty, throw an ArgumentException.
+        // Password: Must be at least 8 characters long.
+        // If invalid, throw an ArgumentException.
+        // Age: Must be between 18 and 120 (inclusive).
+        // If invalid, throw an ArgumentOutOfRangeException.
+        // Email: Must contain both "@" and ".".
+        // If invalid, throw a FormatException.
+        // If all inputs are valid, the method should only print "User registered successfully!" to the console.
+        internal static void RegisterUser(string username, string password, int age, string email)
+        {
+            ArgumentNullException.ThrowIfNull(username);
+
+            if (username == "")
+            {
+                throw new ArgumentException("Username was empty");
+            }
+
+            if (password.Length < 8)
+            {
+                throw new ArgumentException("Password must be at least 8 characters long.");
+            }
+
+            if (age < 18 || age > 120)
+            {
+                throw new ArgumentOutOfRangeException(nameof(age));
+            }
+
+            if (!email.Contains('@') || !email.Contains('.'))
+            {
+                throw new FormatException("Email was not formatted properly.");
+            }
+
+            Console.WriteLine("User registered successfully!");
         }
     }
 }
