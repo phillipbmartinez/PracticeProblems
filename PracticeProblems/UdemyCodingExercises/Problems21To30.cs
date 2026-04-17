@@ -336,5 +336,36 @@ namespace UdemyCodingExercises
                 return $"Task [{guidPrefix}]: {Description}";
             }
         }
+
+
+        // #30: Calculate factorial with recursion
+        // A math utility needs to compute the factorial of a non-negative integer
+        // (e.g., 5! = 5 * 4 * 3 * 2 * 1 = 120).
+        // Important: The factorial of 0 is 1.
+        // Your task is to implement the CalculateFactorial method.The method takes an integer and returns its factorial as an int. Throw an ArgumentException if the input is negative since the factorial is undefined for negative numbers.
+        public static int CalculateFactorial(int number)
+        {
+            int factorial = 1;
+
+            if (number < 0)
+            {
+                throw new ArgumentException("Number cannot be less than 0");
+            }
+
+            if (number == 0 || number == 1)
+            {
+                return 1;
+            }
+
+            // Using recursion
+            // return number * CalculateFactorial(number - 1);
+
+            for (int i = 2; i <= number; i++)
+            {
+                factorial = factorial * i;
+            }
+
+            return factorial;
+        }
     }
 }
