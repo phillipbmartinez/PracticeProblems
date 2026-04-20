@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UdemyCodingExercises.Problems11To20;
 
@@ -141,6 +143,39 @@ namespace UdemyCodingExercises
             Draw,
             XWins,
             OWins
+        }
+
+
+        // #32: Event ticket composed ID
+        // An event system needs to compare tickets based on their event name and date.
+        // Your task is to implement equality members for the Ticket class by overriding Equals and GetHashCode.The class has EventName(string) and EventDate(DateTime) properties, and two tickets are equal if both properties match exactly.
+        public class Ticket
+        {
+            public string EventName { get; }
+            public DateTime EventDate { get; }
+
+            public Ticket(string eventName, DateTime eventDate)
+            {
+                EventName = eventName;
+                EventDate = eventDate;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is null || obj is not Ticket)
+                {
+                    return false;
+                }
+
+                Ticket other = (Ticket)obj;
+
+                return EventDate == other.EventDate && EventName == other.EventName;
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(EventName, EventDate);
+            }
         }
     }
 }
