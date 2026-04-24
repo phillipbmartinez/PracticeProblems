@@ -6,7 +6,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
@@ -36,7 +38,7 @@ namespace UdemyCodingExercises
             {
                 throw new ArgumentException("Grid is not 3 x 3.");
             }
-            
+
             for (int i = 0; i < grid.Length / 3; i++)
             {
                 for (int j = 0; j < grid.Length / 3; j++)
@@ -238,8 +240,8 @@ namespace UdemyCodingExercises
 
             decimal priceAfterDiscount = basePrice * (1 - (discountPercentage / 100m));
 
-            return goodsType == GoodsType.Luxury ? 
-                ApplyTax(priceAfterDiscount, LuxuryGoodsExtraTax) : 
+            return goodsType == GoodsType.Luxury ?
+                ApplyTax(priceAfterDiscount, LuxuryGoodsExtraTax) :
                 ApplyTax(priceAfterDiscount);
         }
 
@@ -297,7 +299,7 @@ namespace UdemyCodingExercises
                 {
                     return 0;
                 }
-                
+
                 if (book1 == null && book2 != null)
                 {
                     return -1;
@@ -351,6 +353,35 @@ namespace UdemyCodingExercises
                 House? otherHouse = other as House;
 
                 return this.FloorArea.CompareTo(otherHouse.FloorArea);
+            }
+        }
+
+
+        // Problem #38: Recent messages by timestamp
+        // Implement the GetRecentMessages method to take a collection of Message objects and return an IEnumerable<string> with messages sorted by Timestamp from most recent to oldest, formatted as "yyyy-MM-dd HH:mm:ss - [CONTENT]".
+        // Null input should be handled by throwing an ArgumentNullException (already implemented).
+        public static IEnumerable<string> GetRecentMessages(IEnumerable<Message> messages)
+        {
+            if (messages is null)
+            {
+                throw new ArgumentNullException(nameof(messages), "Messages cannot be null.");
+            }
+
+            return messages
+                .OrderByDescending(message => message.Timestamp)
+                .Select(message => $"{message.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")} - {message.Content}");
+        }
+
+        // For problem #38
+        public class Message
+        {
+            public string Content { get; }
+            public DateTime Timestamp { get; }
+
+            public Message(string content, DateTime timestamp)
+            {
+                Content = content;
+                Timestamp = timestamp;
             }
         }
     }
