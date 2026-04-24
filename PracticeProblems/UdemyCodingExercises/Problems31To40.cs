@@ -324,5 +324,34 @@ namespace UdemyCodingExercises
                 PageCount = pageCount;
             }
         }
+
+
+        // Problem #37: Sort houses by floor area with IComparable
+        // Exercise description: The IComparable<T> interface is used to define a natural sorting order for objects, enabling automatic comparisons in collections like lists or arrays, such as sorting houses by floor area in a real estate catalog.
+        // Your task is to implement the IComparable<House> in the House class to compare two House objects based on their FloorArea properties in ascending order, using the provided House class with Address(string) and FloorArea(decimal, in square meters)
+        // The method should return an integer indicating the order(negative if this < other, zero if equal, positive if this > other), handling null cases appropriately.
+        public class House : IComparable<House>
+        {
+            public string Address { get; }
+            public decimal FloorArea { get; }
+
+            public House(string address, decimal floorArea)
+            {
+                Address = address;
+                FloorArea = floorArea;
+            }
+
+            public int CompareTo(House? other)
+            {
+                if (other == null)
+                {
+                    return 1;
+                }
+
+                House? otherHouse = other as House;
+
+                return this.FloorArea.CompareTo(otherHouse.FloorArea);
+            }
+        }
     }
 }
