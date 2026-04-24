@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Dynamic;
 using System.Linq;
@@ -254,6 +255,28 @@ namespace UdemyCodingExercises
         {
             Basic,
             Luxury
+        }
+
+        // Problem #35: Reverse a string without built-in methods
+        // A text processor needs to reverse a string without relying on built-in reverse methods.
+        // Your task is to implement the ReverseString method to take a string input and return it with its characters in reverse order, handling null input by throwing an ArgumentNullException.
+        public static string ReverseString(string input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input), "Input cannot be null.");
+            }
+
+            string reversedString = string.Empty;
+
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+                Console.WriteLine($"Index: {i} => {input[i]}");
+                reversedString += input[i];
+                Console.WriteLine($"Reversed String = {reversedString}");
+            }
+
+            return reversedString;
         }
     }
 }
