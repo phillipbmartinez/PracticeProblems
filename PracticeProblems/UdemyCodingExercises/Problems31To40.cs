@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Buffers.Text;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -6,13 +8,17 @@ using System.Diagnostics.Metrics;
 using System.Dynamic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Reflection.Metadata.BlobBuilder;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UdemyCodingExercises.Problems11To20;
+using static UdemyCodingExercises.Problems31To40;
 
 namespace UdemyCodingExercises
 {
@@ -277,6 +283,46 @@ namespace UdemyCodingExercises
             }
 
             return reversedString;
+        }
+
+
+        // Problem #36: Custom book sorting with IComparer
+        // Comparers like IComparer<T> are used to customize sorting for collections, such as ordering objects in a list by specific properties or in non-default ways, enabling flexible comparisons in applications like inventory systems or data displays.
+        // Your task is to implement the Compare method in the BookTitleComparer class to compare two Book objects based on their Title properties, using the provided Book class. The method should return an integer indicating the order(negative if x<y, zero if x = y, positive if x > y), handling null cases appropriately(null books should go before non-null in sorting order).
+        public class BookTitleComparer : IComparer<Book>
+        {
+            public int Compare(Book? book1, Book? book2)
+            {
+                if (book1 == null && book2 == null)
+                {
+                    return 0;
+                }
+                
+                if (book1 == null && book2 != null)
+                {
+                    return -1;
+                }
+
+                if (book1 != null && book2 == null)
+                {
+                    return 1;
+                }
+
+                return string.Compare(book1?.Title, book2?.Title, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        // For problem #36
+        public class Book
+        {
+            public string Title { get; }
+            public int PageCount { get; }
+
+            public Book(string title, int pageCount)
+            {
+                Title = title;
+                PageCount = pageCount;
+            }
         }
     }
 }
