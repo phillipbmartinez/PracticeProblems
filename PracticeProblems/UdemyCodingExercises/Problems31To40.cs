@@ -177,5 +177,25 @@ namespace UdemyCodingExercises
                 return HashCode.Combine(EventName, EventDate);
             }
         }
+
+
+        // #33: Produce Fibonacci sequence
+        // A math tool needs to generate Fibonacci numbers up to a given limit as an iterator method that can be lazily evaluated in a foreach loop(using "yield" is crucial here).
+        // The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, typically starting with 0 and 1, resulting in a sequence like 0, 1, 1, 2, 3, 5, 8, and so on.
+        // Your task is to implement the GetFibonacciSequence method to produce Fibonacci numbers(starting with 0, 1) up to a specified cap, stopping immediately if the cap is negative or when a number exceeds the cap.The method takes an integer cap and returns an IEnumerable<int> with the sequence.
+        public static IEnumerable<int> GetFibonacciSequence(int cap)
+        {
+            int previous = 0;
+            int current = 1;
+
+            while (previous <= cap)
+            {
+                yield return previous;
+
+                int temp = previous + current;
+                previous = current;
+                current = temp;
+            }
+        }
     }
 }
