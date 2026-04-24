@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
+using System.Dynamic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -196,6 +200,60 @@ namespace UdemyCodingExercises
                 previous = current;
                 current = temp;
             }
+        }
+
+
+        // #34: Calculate discounted price
+        // A pricing system needs to compute the final price of goods after applying a discount and tax based on their type.
+        // Your task is to implement the CalculateDiscountedPrice method to calculate the discounted price for a given base price and goods type, with an optional discount percentage.
+        // The algorithm for calculating the price is as follows:
+        // Validate that basePrice and discountPercentage are non-negative, throwing an ArgumentOutOfRangeException if either is negative.Validate that discountPercentage does not exceed 100, throwing an ArgumentOutOfRangeException if it does.
+        // Calculate the price after the discount. To do that, take the base price and reduce it by the discount percentage. For example, if the base price is 200, and the discount percentage is 20%, the price after the discount will be 160 (80% of 200).
+        // Apply the tax to the price after the discount using the provided ApplyTax method.
+        // For luxury goods, apply a tax by calling ApplyTax with the price after discount and LuxuryGoodsExtraTax
+        // For basic goods, call ApplyTax with just the price after discount.
+        // For example, if the price after discount is 160, and we have basic goods, the price after the tax will be 171.2 (160 + 7% of 160, which is 160 + 11.2 = 171.2).
+        // Return the result from ApplyTax as the final price.
+        private const int BasicGoodsTax = 7;
+        private const int LuxuryGoodsExtraTax = 9;
+
+        public static decimal CalculateDiscountedPrice(decimal basePrice, GoodsType goodsType, decimal discountPercentage = 10m)
+        {
+            if (basePrice < 0 || discountPercentage < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            if (discountPercentage > 100)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            decimal priceAfterDiscount = basePrice * (1 - (discountPercentage / 100m));
+
+            return goodsType == GoodsType.Luxury ? 
+                ApplyTax(priceAfterDiscount, LuxuryGoodsExtraTax) : 
+                ApplyTax(priceAfterDiscount);
+        }
+
+        // For problem #34
+        public static decimal ApplyTax(decimal amount, decimal extraTax = 0m)
+        {
+            var taxRate = BasicGoodsTax + extraTax;
+            if (amount < 0 || taxRate < 0)
+            {
+                throw new ArgumentException(
+                    "Amount and tax rate must be non-negative.");
+            }
+
+            return amount * (1 + taxRate / 100m);
+        }
+
+        // For problem #34
+        public enum GoodsType
+        {
+            Basic,
+            Luxury
         }
     }
 }
