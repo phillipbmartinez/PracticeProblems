@@ -384,5 +384,18 @@ namespace UdemyCodingExercises
                 Timestamp = timestamp;
             }
         }
+
+
+        // Problem #39: Define a value-based House data structure
+        // Define a public House type with Address(string), FloorArea(decimal), BedroomCount(int), and HasGarage(bool) properties.
+        // This type should provide:
+        // value-based equality
+        // a generated hash code
+        // an overridden ToString method
+        // immutability
+        // deconstruction into its properties
+        // Consider using records.
+        public record HouseRecord(string Address, decimal FloorArea, int BedroomCount, bool HasGarage);
+
     }
 }
