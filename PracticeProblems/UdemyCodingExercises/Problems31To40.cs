@@ -8,6 +8,8 @@ using System.Diagnostics.Metrics;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
@@ -17,6 +19,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Net.WebRequestMethods;
 using static System.Reflection.Metadata.BlobBuilder;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UdemyCodingExercises.Problems11To20;
@@ -397,5 +400,70 @@ namespace UdemyCodingExercises
         // Consider using records.
         public record HouseRecord(string Address, decimal FloorArea, int BedroomCount, bool HasGarage);
 
+
+        // Problem #40: Handle web request errors with exception filtering
+        // Implement the ProcessWebRequest method to process a URL string using the provided SimulateRequest helper, handling HttpRequestException.
+        // The SimulateRequest method can only throw the HttpRequestException; however, depending on the nature of the problem, this exception can have various HTTP status codes.
+        // Depending on the code, different values should be returned from the ProcessWebRequest method:
+        // For code 404 (ex.StatusCode == HttpStatusCode.NotFound): "404: The requested resource was not found."
+        // For code 500 (ex.StatusCode == HttpStatusCode.InternalServerError): "500: An internal server error occurred."
+        // For other codes: "An unexpected HTTP error occurred."
+        // If no exception is thrown by the SimulateRequest method, simply return its result.
+        // Consider using exception filtering with the "when" keyword.
+        public static string ProcessWebRequest(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentException("URL cannot be null or empty.", nameof(url));
+            }
+
+            try
+            {
+                return SimulateRequest(url);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return "404: The requested resource was not found.";
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                return "500: An internal server error occurred.";
+            }
+            catch (HttpRequestException ex) when (ex.Message.Contains("forbidden"))
+            {
+                return ex.Message;
+            }
+            catch (HttpRequestException)
+            {
+                return "An unexpected HTTP error occurred.";
+            }
+        }
+
+        // For problem #40
+        private static string SimulateRequest(string url)
+        {
+            if (url.Contains("notfound"))
+            {
+                throw new HttpRequestException(
+                    "Resource not found",
+                    null,
+                    HttpStatusCode.NotFound);
+            }
+            if (url.Contains("servererror"))
+            {
+                throw new HttpRequestException(
+                    "Server error",
+                    null,
+                    HttpStatusCode.InternalServerError);
+            }
+            if (url.Contains("forbidden"))
+            {
+                throw new HttpRequestException(
+                    "Access denied",
+                    null,
+                    HttpStatusCode.Forbidden);
+            }
+            return "Request successful";
+        }
     }
 }
